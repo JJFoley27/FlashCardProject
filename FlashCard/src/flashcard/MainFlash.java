@@ -32,7 +32,7 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
 
     public MainFlash() {
         super("Flash ahhah savior of the universe");
-        getCards("flash");
+        getCards("deck0");
         add(buttonContainer);
         setMenuBar();
         
@@ -49,19 +49,24 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
             file.add(fileMenu[i]);
             fileMenu[i].addActionListener((ActionListener) this);
         }
+        
         deckFileBarGen();
         
     }
     private void deckFileBarGen() {
+        file.add(openDeck);
         int listAmount = new File("flashcardDecks").listFiles().length;
         files = new JMenuItem[listAmount];
         for(int i = 0; i < listAmount; i++){
+            System.out.println(i);
         Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
+        
         try {
             InputStream input = Files.newInputStream(inf);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            String s = reader.readLine();
-            files[i] = new JMenuItem(s);
+            String[] s = reader.readLine().split(",");
+            System.out.println(s[0]);
+            files[i] = new JMenuItem(s[0]);
             openDeck.add(files[i]);
             files[i].addActionListener(this);
             
@@ -70,7 +75,7 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
 
         }
         }
-        file.add(openDeck);
+        
     }
     @Override
     public void mouseClicked(MouseEvent e) {
