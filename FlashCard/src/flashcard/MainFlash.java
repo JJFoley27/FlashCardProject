@@ -25,7 +25,7 @@ public class MainFlash extends JFrame implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         Object source = e.getSource();
-         
+        
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MainFlash extends JFrame implements MouseListener{
         answers = null;
         buttonArr = null;
         int counter =0;
-        Path inf = Paths.get("flashcardDecks\\" + fileName+ ".txt");
+        Path inf = Paths.get("flashcardDecks\\" + fileName+ ".csv");
         try {
             InputStream input = Files.newInputStream(inf);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
