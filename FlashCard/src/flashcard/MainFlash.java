@@ -25,33 +25,53 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     //   part of different jframe   JMenuItem editDeck = new JMenuItem("Add Card to current Deck");
     JMenu random = new JMenu("Random");
     JMenu about = new JMenu("About");
-    JMenu topRow[] = {file, random, about};
+    JMenu openDeck = new JMenu("Open Decks");
+    JMenuItem[] files;
     //JMenuItem menuItems[] = {newDeck, editDeck, exit};
-    JMenuItem menuItems[] = {newDeck, exit};
+    JMenuItem fileMenu[] = {newDeck, exit};
 
     public MainFlash() {
         super("Flash ahhah savior of the universe");
         getCards("flash");
         add(buttonContainer);
-
+        setMenuBar();
+        
+    }
+    private void setMenuBar() {
         setJMenuBar(menubar);
         menubar.add(file);
         file.add(newDeck);
         //file.add(editDeck);
-        file.add(exit);
         menubar.add(random);
         menubar.add(about);
-
-        for (int i = 0; i < topRow.length; i++) {
-            topRow[i].addActionListener((ActionListener) this);
-        }
-
         // adds action listeners to all menu items
-        for (int i = 0; i < menuItems.length; i++) {
-            menuItems[i].addActionListener((ActionListener) this);
+        for (int i = 0; i < fileMenu.length; i++) {
+            file.add(fileMenu[i]);
+            fileMenu[i].addActionListener((ActionListener) this);
         }
+        deckFileBarGen();
+        
     }
+    private void deckFileBarGen() {
+        int listAmount = new File("flashcardDecks").listFiles().length;
+        files = new JMenuItem[listAmount];
+        for(int i = 0; i < listAmount; i++){
+        Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
+        try {
+            InputStream input = Files.newInputStream(inf);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            String s = reader.readLine();
+            files[i] = new JMenuItem(s);
+            openDeck.add(files[i]);
+            files[i].addActionListener(this);
+            
+        } catch (Exception ex) {
+            System.out.println(ex);
 
+        }
+        }
+        file.add(openDeck);
+    }
     @Override
     public void mouseClicked(MouseEvent e) {
         Object source = e.getSource();
@@ -87,9 +107,9 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
         Object choice = ae.getSource();
 
         // loops through all menu items to find match with choice
-        for (int i = 0; i < menuItems.length; i++) {
+        for (int i = 0; i < fileMenu.length; i++) {
             // if match is found
-            if (choice == menuItems[i]) {
+            if (choice == fileMenu[i]) {
 
             }
             if (choice == exit) {
@@ -112,11 +132,12 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
         answers = null;
         buttonArr = null;
         int counter = 0;
-        Path inf = Paths.get("flashcardDecks\\" + fileName + ".txt");
+        Path inf = Paths.get("flashcardDecks\\" + fileName + ".csv");
         try {
             InputStream input = Files.newInputStream(inf);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             String s = reader.readLine();
+            s = reader.readLine();
             names = s.split(",");
             s = reader.readLine();
             answers = s.split(",");
@@ -137,4 +158,8 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
 
         }
     }
+
+    
+
+    
 }
