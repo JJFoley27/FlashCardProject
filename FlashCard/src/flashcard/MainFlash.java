@@ -82,7 +82,6 @@ public class MainFlash extends JFrame implements MouseListener{
                 buttonContainer.add(buttonArr[counter]);
                 buttonArr[counter].addMouseListener(this);
                 counter+=1;
-                
             }
         } catch (Exception ex) {
             System.out.println(ex);
