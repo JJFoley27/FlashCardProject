@@ -63,8 +63,8 @@ public class MainFlash extends JFrame implements MouseListener{
         names = null;
         answers = null;
         buttonArr = null;
-        int counter =0;
-        Path inf = Paths.get("flashcardDecks\\" + fileName+ ".csv");
+        int counter = 0;
+        Path inf = Paths.get("flashcardDecks\\" + fileName + ".csv");
         try {
             InputStream input = Files.newInputStream(inf);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
