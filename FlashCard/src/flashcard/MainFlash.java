@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  * @author Michael Flett, (add your guys's names here)
  */
-public class MainFlash extends JFrame implements MouseListener, ActionListener{
+class MainJFrame extends JFrame implements MouseListener, ActionListener{
 
     String[] names;
     String[] answers;
@@ -20,16 +20,13 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     JMenuBar menubar = new JMenuBar();
     JMenu file = new JMenu("File");
     JMenuItem exit = new JMenuItem("Exit");
-    JMenuItem newDeck = new JMenuItem("New Deck");  // send to new JFrame
-    //   part of different jframe   JMenuItem editDeck = new JMenuItem("Add Card to current Deck");
+    JMenuItem newDeck = new JMenuItem("New Deck");
     JMenu random = new JMenu("Random");
     JMenu about = new JMenu("About");
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem[] files;
-    //JMenuItem menuItems[] = {newDeck, editDeck, exit};
     JMenuItem fileMenu[] = {openDeck, newDeck, exit};
-
-    public MainFlash() {
+    public MainJFrame() {
         super("Flash ahhah savior of the universe");
         getCards("deck0");
         add(buttonContainer);
@@ -54,7 +51,6 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        // loops through all menu items to find match with choice
         if (source == exit) {
             System.exit(0);
         }
@@ -63,6 +59,7 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
             frame.setSize(600, 300);
             frame.setVisible(true);
         }
+        
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -94,14 +91,7 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
         Object source = e.getSource();
     }
     
-    public static void main(String[] args) {
-        MainFlash frame = new MainFlash();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
-        frame.setVisible(true);
-    }
-
-    private void getCards(String fileName) {
+    public void getCards(String fileName) {
         names = null;
         answers = null;
         buttonArr = null;
@@ -125,7 +115,6 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
                 buttonContainer.add(buttonArr[counter]);
                 buttonArr[counter].addMouseListener(this);
                 counter += 1;
-
             }
         } catch (Exception ex) {
             System.out.println(ex);
@@ -133,26 +122,31 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
         }
     }
     
-    private void deckFileBarGen() {
+    public void deckFileBarGen() {
         int listAmount = new File("flashcardDecks").listFiles().length;
         files = new JMenuItem[listAmount];
         for(int i = 0; i < listAmount; i++){
-        Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
-        try {
-            InputStream input = Files.newInputStream(inf);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            String[] s = reader.readLine().split(",");
-            files[i] = new JMenuItem(s[0]);
-            openDeck.add(files[i]);
-            files[i].addActionListener(this);
-        } catch (Exception ex) {
-            System.out.println(ex);
+            Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
+            try {
+                InputStream input = Files.newInputStream(inf);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                String[] s = reader.readLine().split(",");
+                files[i] = new JMenuItem(s[0]);
+                openDeck.add(files[i]);
+                files[i].addActionListener(this);
+            } catch (Exception ex) {
+                System.out.println(ex);
 
-        }
+            }
         }
         
     }
-    
-
-    
+}
+public class MainFlash{
+    public static void main(String[] args) {
+        MainJFrame frame = new MainJFrame();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 300);
+        frame.setVisible(true);
+    }
 }

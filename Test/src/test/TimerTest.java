@@ -27,7 +27,7 @@ class Helper extends TimerTask
 
 public class TimerTest 
 { 
-    Component newComp = Box.createRigidArea(new Dimension(0, 12));//this is padding for the buttons
+    Component newComp = Box.createRigidArea(new Dimension(0, 12));//this is padding for the buttons its not apart of the timer
     public static void main(String[] args) 
     { 
         Timer timer = new Timer(); 
