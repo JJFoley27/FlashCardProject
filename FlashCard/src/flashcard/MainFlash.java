@@ -27,7 +27,7 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem[] files;
     //JMenuItem menuItems[] = {newDeck, editDeck, exit};
-    JMenuItem fileMenu[] = {newDeck, exit};
+    JMenuItem fileMenu[] = {openDeck, newDeck, exit};
 
     public MainFlash() {
         super("Flash ahhah savior of the universe");
@@ -51,17 +51,17 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     }
     
     
-    public void actionPerformed(ActionEvent ae) {
-        Object choice = ae.getSource();
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
         // loops through all menu items to find match with choice
-        for (int i = 0; i < fileMenu.length; i++) {
-            // if match is found
-            if (choice == fileMenu[i]) {
-
-            }
-            if (choice == exit) {
-                System.exit(0);
-            }
+        if (source == exit) {
+            System.exit(0);
+        }
+        else if(source == newDeck){
+            NewDeck frame = new NewDeck();
+            frame.setSize(600, 300);
+            frame.setVisible(true);
         }
     }
     @Override
@@ -134,22 +134,17 @@ public class MainFlash extends JFrame implements MouseListener, ActionListener{
     }
     
     private void deckFileBarGen() {
-        file.add(openDeck);
         int listAmount = new File("flashcardDecks").listFiles().length;
         files = new JMenuItem[listAmount];
         for(int i = 0; i < listAmount; i++){
-            System.out.println(i);
         Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
-        
         try {
             InputStream input = Files.newInputStream(inf);
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
             String[] s = reader.readLine().split(",");
-            System.out.println(s[0]);
             files[i] = new JMenuItem(s[0]);
             openDeck.add(files[i]);
             files[i].addActionListener(this);
-            
         } catch (Exception ex) {
             System.out.println(ex);
 
