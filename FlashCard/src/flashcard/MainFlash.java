@@ -46,8 +46,6 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             fileMenu[i].addActionListener((ActionListener) this);
         }
     }
-    
-    
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
@@ -59,7 +57,6 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             frame.setSize(600, 300);
             frame.setVisible(true);
         }
-        
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -70,12 +67,15 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             cardLayout.previous(buttonContainer);
         }
     }
-
     @Override
     public void mouseEntered(MouseEvent e) {
         Object source = e.getSource();
+        for(int i = 0; i < files.length; i++){
+            openDeck.remove(files[i]);
+        }
+        rePaint();
+        deckFileBarGen();
     }
-
     @Override
     public void mouseExited(MouseEvent e) {
         Object source = e.getSource();
@@ -83,9 +83,7 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
     @Override
     public void mouseClicked(MouseEvent e) {
         Object source = e.getSource();
-
     }
-
     @Override
     public void mousePressed(MouseEvent e) {
         Object source = e.getSource();
@@ -118,12 +116,12 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             }
         } catch (Exception ex) {
             System.out.println(ex);
-
         }
     }
     
     public void deckFileBarGen() {
         int listAmount = new File("flashcardDecks").listFiles().length;
+        files = null;
         files = new JMenuItem[listAmount];
         for(int i = 0; i < listAmount; i++){
             Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
@@ -136,10 +134,12 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
                 files[i].addActionListener(this);
             } catch (Exception ex) {
                 System.out.println(ex);
-
             }
         }
-        
+    }
+    public void rePaint(){
+        revalidate();
+        repaint();
     }
 }
 public class MainFlash{

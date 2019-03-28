@@ -15,10 +15,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import static java.nio.file.StandardOpenOption.CREATE;
-import static java.nio.file.StandardOpenOption.WRITE;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static java.nio.file.StandardOpenOption.*;
 import javax.swing.*;
 
 /**
@@ -28,7 +25,7 @@ import javax.swing.*;
 public class NewDeck extends JFrame implements ActionListener{
     JPanel buttonPanelN = new JPanel(new FlowLayout());
     JLabel direction = new JLabel("Title: ");
-    JTextField Title = new JTextField(20);
+    JTextField title = new JTextField(20);
     JPanel buttonPanelW = new JPanel(new FlowLayout());
     JButton newCard = new JButton("New Card");
     JPanel buttonPanelE = new JPanel();
@@ -46,7 +43,7 @@ public class NewDeck extends JFrame implements ActionListener{
         setLayout(new BorderLayout());
         add(buttonPanelN, BorderLayout.NORTH);
         buttonPanelN.add(direction);
-        buttonPanelN.add(Title);
+        buttonPanelN.add(title);
         buttonPanelE.setLayout(new BoxLayout(buttonPanelE, BoxLayout.PAGE_AXIS));
         add(finishedButton, BorderLayout.SOUTH);
         finishedButton.addActionListener(this);
@@ -78,18 +75,14 @@ public class NewDeck extends JFrame implements ActionListener{
             boolean bool = f.createNewFile();
             Path outFile = Paths.get(filePath);
             FileChannel out = (FileChannel)Files.newByteChannel(outFile, CREATE, WRITE);
-            
-            String s =   System.getProperty("line.separator");
+            String lineSep = System.getProperty("line.separator");
+            String s = title.getText() + lineSep + subjectSet.toString()  + lineSep + descraptionSet.toString() + lineSep;
             byte data[] = s.getBytes();
             ByteBuffer buffer = ByteBuffer.wrap(data);
             out.write(buffer);
-            
         } catch (IOException ex) {
             System.out.println(ex);
         }
-
-            
-        
     }
     @Override
     public void actionPerformed(ActionEvent e) {
