@@ -11,10 +11,9 @@ import javax.swing.*;
  * @author Michael Flett, (add your guys's names here)
  */
 class MainJFrame extends JFrame implements MouseListener, ActionListener{
-
     String[] names;
     String[] answers;
-    JButton[] buttonArr;
+    JButton[] buttonArr = null;
     CardLayout cardLayout = new CardLayout();
     JPanel buttonContainer = new JPanel(cardLayout);
     JMenuBar menubar = new JMenuBar();
@@ -57,6 +56,13 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             frame.setSize(600, 300);
             frame.setVisible(true);
         }
+        else{
+            for(int i = 0; i < files.length;i++){
+                if(source == files[i]){
+                    getCards("deck" + i);
+                }
+            }
+        }
     }
     @Override
     public void mouseReleased(MouseEvent e) {
@@ -90,6 +96,15 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
     }
     
     public void getCards(String fileName) {
+        if(buttonArr != null){
+            try{
+                for(int i = 0; i < buttonArr.length; i++){
+                    buttonContainer.remove(buttonArr[i]);
+                }
+            }catch(Exception e){
+                System.out.println(e);
+            }
+        }
         names = null;
         answers = null;
         buttonArr = null;
@@ -117,6 +132,7 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        rePaint();
     }
     
     public void deckFileBarGen() {
