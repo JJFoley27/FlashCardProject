@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  * @author Michael Flett, Christopher Coen, Alix Kramer, Jesse Foley
  */
-class MainJFrame extends JFrame implements MouseListener, ActionListener {
+class MainFlash extends JFrame implements MouseListener, ActionListener {
     String[] names;
     String[] answers;
     JButton[] buttonArr = null;
@@ -26,7 +26,7 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener {
     JMenuItem[] files;
     JMenuItem fileMenu[] = {openDeck, newDeck, exit};
 
-    public MainJFrame() {
+    public MainFlash() {
         super("Flash ahhah savior of the universe");
         getCards("deck0");
         add(buttonContainer);
@@ -55,7 +55,7 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener {
             System.exit(0);
         } else if (source == newDeck) {
             NewDeck frame = new NewDeck();
-            frame.setSize(600, 300);
+            frame.setSize(800, 600);
             frame.setVisible(true);
         }
         else{
@@ -165,12 +165,8 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener {
         revalidate();
         repaint();
     }
-}
-
-public class MainFlash {
-
     public static void main(String[] args) {
-        MainJFrame frame = new MainJFrame();
+        MainFlash frame = new MainFlash();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 300);
         frame.setVisible(true);

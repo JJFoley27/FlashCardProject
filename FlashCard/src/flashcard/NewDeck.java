@@ -17,13 +17,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.*;
 import javax.swing.*;
+import org.jdesktop.swingx.VerticalLayout;
 
 /**
  *
  * @author Owner
  */
 public class NewDeck extends JFrame implements ActionListener{
-    
     JPanel buttonPanelN = new JPanel(new FlowLayout());
     JLabel direction = new JLabel("Title: ");
     JTextField title = new JTextField(20);
@@ -37,7 +37,7 @@ public class NewDeck extends JFrame implements ActionListener{
     Component[] padding2 = new Component[1000];
     int cardArrCounter = 0;
     JPanel scrollContaner = new JPanel(new BorderLayout());
-    JPanel writerPanelC = new JPanel(new FlowLayout());
+    JPanel writerPanelC = new JPanel();
     JScrollPane pane = new JScrollPane(scrollContaner);
     JButton finishedButton = new JButton("finish");
     int listAmount = new File("flashcardDecks").listFiles().length;//use this for file name gen
@@ -47,6 +47,7 @@ public class NewDeck extends JFrame implements ActionListener{
         add(buttonPanelN, BorderLayout.NORTH);
         buttonPanelN.add(direction);
         buttonPanelN.add(title);
+        writerPanelC.setLayout(new VerticalLayout());
         buttonPanelE.setLayout(new BoxLayout(buttonPanelE, BoxLayout.PAGE_AXIS));
         add(finishedButton, BorderLayout.SOUTH);
         finishedButton.addActionListener(this);
@@ -61,9 +62,6 @@ public class NewDeck extends JFrame implements ActionListener{
     public void writeFile(){
         String filePath = "flashcardDecks\\deck" + listAmount + ".csv";
         File f = new File(filePath);
-        
-        
-        
         StringBuilder subjectSet = new StringBuilder();
         StringBuilder descraptionSet = new StringBuilder();
         for(int i = 0; i < cardArrCounter; i++){
@@ -75,7 +73,6 @@ public class NewDeck extends JFrame implements ActionListener{
             }
             System.out.println(subjectSet.toString());
         }
-        
         try {
             boolean bool = f.createNewFile();
             Path outFile = Paths.get(filePath);
@@ -85,9 +82,11 @@ public class NewDeck extends JFrame implements ActionListener{
             byte data[] = s.getBytes();
             ByteBuffer buffer = ByteBuffer.wrap(data);
             out.write(buffer);
+            out.close();
         } catch (IOException ex) {
             System.out.println(ex);
         }
+        
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -108,21 +107,19 @@ public class NewDeck extends JFrame implements ActionListener{
     }
     private void addNewCard() {
         subjectCardArr[cardArrCounter] = new JTextField();
-        subjectCardArr[cardArrCounter].setColumns(30);
         writerPanelC.add(subjectCardArr[cardArrCounter]);
         
         definitionCardArr[cardArrCounter] = new JTextField();
-        definitionCardArr[cardArrCounter].setColumns(30);
         writerPanelC.add(definitionCardArr[cardArrCounter]);
         
-        padding1[cardArrCounter] = Box.createRigidArea(new Dimension(0, 12));
+        padding1[cardArrCounter] = Box.createRigidArea(new Dimension(0, 7));
         buttonPanelE.add(padding1[cardArrCounter]);
         
         delCardArr[cardArrCounter] = new JButton("Delete Card");
         buttonPanelE.add(delCardArr[cardArrCounter]).setBackground(Color.red);
         delCardArr[cardArrCounter].addActionListener(this);
         
-        padding2[cardArrCounter] = Box.createRigidArea(new Dimension(0, 12));
+        padding2[cardArrCounter] = Box.createRigidArea(new Dimension(0, 7));
         buttonPanelE.add(padding2[cardArrCounter]);
         cardArrCounter+=1;
         rePaint();
