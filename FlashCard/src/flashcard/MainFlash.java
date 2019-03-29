@@ -10,12 +10,7 @@ import javax.swing.*;
  *
  * @author Michael Flett, Christopher Coen, Alix Kramer, Jesse Foley
  */
-<<<<<<< HEAD
-class MainJFrame extends JFrame implements MouseListener, ActionListener{
-=======
 class MainJFrame extends JFrame implements MouseListener, ActionListener {
-
->>>>>>> ef3be580f403fc4266d17135f972019ac048bbe6
     String[] names;
     String[] answers;
     JButton[] buttonArr = null;
