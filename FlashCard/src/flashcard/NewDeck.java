@@ -23,6 +23,7 @@ import javax.swing.*;
  * @author Owner
  */
 public class NewDeck extends JFrame implements ActionListener{
+    
     JPanel buttonPanelN = new JPanel(new FlowLayout());
     JLabel direction = new JLabel("Title: ");
     JTextField title = new JTextField(20);
@@ -35,7 +36,9 @@ public class NewDeck extends JFrame implements ActionListener{
     Component[] padding1 = new Component[1000];
     Component[] padding2 = new Component[1000];
     int cardArrCounter = 0;
+    JPanel scrollContaner = new JPanel(new BorderLayout());
     JPanel writerPanelC = new JPanel(new FlowLayout());
+    JScrollPane pane = new JScrollPane(scrollContaner);
     JButton finishedButton = new JButton("finish");
     int listAmount = new File("flashcardDecks").listFiles().length;//use this for file name gen
     public NewDeck() {
@@ -47,11 +50,13 @@ public class NewDeck extends JFrame implements ActionListener{
         buttonPanelE.setLayout(new BoxLayout(buttonPanelE, BoxLayout.PAGE_AXIS));
         add(finishedButton, BorderLayout.SOUTH);
         finishedButton.addActionListener(this);
-        add(buttonPanelE, BorderLayout.EAST);
+        
         add(buttonPanelW, BorderLayout.WEST);
         buttonPanelW.add(newCard);
         newCard.addActionListener(this);
-        add(writerPanelC, BorderLayout.CENTER);
+        scrollContaner.add(writerPanelC, BorderLayout.CENTER);
+        scrollContaner.add(buttonPanelE, BorderLayout.EAST);
+        add(pane, BorderLayout.CENTER);
     }
     public void writeFile(){
         String filePath = "flashcardDecks\\deck" + listAmount + ".csv";

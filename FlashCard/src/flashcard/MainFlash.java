@@ -8,9 +8,14 @@ import javax.swing.*;
 
 /**
  *
- * @author Michael Flett, (add your guys's names here)
+ * @author Michael Flett, Christopher Coen, Alix Kramer, Jesse Foley
  */
+<<<<<<< HEAD
 class MainJFrame extends JFrame implements MouseListener, ActionListener{
+=======
+class MainJFrame extends JFrame implements MouseListener, ActionListener {
+
+>>>>>>> ef3be580f403fc4266d17135f972019ac048bbe6
     String[] names;
     String[] answers;
     JButton[] buttonArr = null;
@@ -25,12 +30,14 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem[] files;
     JMenuItem fileMenu[] = {openDeck, newDeck, exit};
+
     public MainJFrame() {
         super("Flash ahhah savior of the universe");
         getCards("deck0");
         add(buttonContainer);
         setMenuBar();
     }
+
     private void setMenuBar() {
         setJMenuBar(menubar);
         menubar.add(file);
@@ -45,13 +52,13 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             fileMenu[i].addActionListener((ActionListener) this);
         }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == exit) {
             System.exit(0);
-        }
-        else if(source == newDeck){
+        } else if (source == newDeck) {
             NewDeck frame = new NewDeck();
             frame.setSize(600, 300);
             frame.setVisible(true);
@@ -64,6 +71,7 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             }
         }
     }
+
     @Override
     public void mouseReleased(MouseEvent e) {
         Object source = e.getSource();
@@ -73,28 +81,32 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             cardLayout.previous(buttonContainer);
         }
     }
+
     @Override
     public void mouseEntered(MouseEvent e) {
         Object source = e.getSource();
-        for(int i = 0; i < files.length; i++){
+        for (int i = 0; i < files.length; i++) {
             openDeck.remove(files[i]);
         }
         rePaint();
         deckFileBarGen();
     }
+
     @Override
     public void mouseExited(MouseEvent e) {
         Object source = e.getSource();
     }
+
     @Override
     public void mouseClicked(MouseEvent e) {
         Object source = e.getSource();
     }
+
     @Override
     public void mousePressed(MouseEvent e) {
         Object source = e.getSource();
     }
-    
+
     public void getCards(String fileName) {
         if(buttonArr != null){
             try{
@@ -134,12 +146,12 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
         }
         rePaint();
     }
-    
+
     public void deckFileBarGen() {
         int listAmount = new File("flashcardDecks").listFiles().length;
         files = null;
         files = new JMenuItem[listAmount];
-        for(int i = 0; i < listAmount; i++){
+        for (int i = 0; i < listAmount; i++) {
             Path inf = Paths.get("flashcardDecks\\deck" + i + ".csv");
             try {
                 InputStream input = Files.newInputStream(inf);
@@ -153,12 +165,15 @@ class MainJFrame extends JFrame implements MouseListener, ActionListener{
             }
         }
     }
-    public void rePaint(){
+
+    public void rePaint() {
         revalidate();
         repaint();
     }
 }
-public class MainFlash{
+
+public class MainFlash {
+
     public static void main(String[] args) {
         MainJFrame frame = new MainJFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
