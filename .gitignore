@@ -6,3 +6,4 @@
 /Test/build/
 /classdebugexercise/nbproject/private/
 *.csv
+/Test/dist/

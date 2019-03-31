@@ -71,7 +71,6 @@ public class NewDeck extends JFrame implements ActionListener{
             }catch(Exception ex){
 
             }
-            System.out.println(subjectSet.toString());
         }
         try {
             boolean bool = f.createNewFile();
@@ -86,7 +85,6 @@ public class NewDeck extends JFrame implements ActionListener{
         } catch (IOException ex) {
             System.out.println(ex);
         }
-        
     }
     @Override
     public void actionPerformed(ActionEvent e) {
