@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.nio.file.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 /**
@@ -21,15 +22,17 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     JMenu file = new JMenu("File");
     JMenuItem exit = new JMenuItem("Exit");
     JMenuItem newDeck = new JMenuItem("New Deck");
+    JMenu orderCards = new JMenu("Order Cards");
     JMenuItem random = new JMenuItem("Random");
+    JMenuItem Alphabetical = new JMenuItem("Alphabetical");
     JMenu about = new JMenu("About");
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem[] files;
     JMenuItem fileMenu[] = {openDeck, newDeck, exit};
     String currentDeck = "deck0";
     public MainFlash() {
-        super("Flash ahhah savior of the universe");
-//        getCards(currentDeck, false, false);
+        super("Flash!!!!! Ahhah Savior of the Universe!!!!!!");
+        getCards(currentDeck, false, false);
         add(buttonContainer);
         setMenuBar();
     }
@@ -37,8 +40,11 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         setJMenuBar(menubar);
         menubar.add(file);
         //file.add(editDeck);
-        menubar.add(random);
+        menubar.add(orderCards);
+        orderCards.add(random);
+        orderCards.add(Alphabetical);
         random.addActionListener(this);
+        Alphabetical.addActionListener(this);
         menubar.add(about);
         // adds action listeners to all menu items
         deckFileBarGen();
@@ -58,8 +64,10 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
             frame.setVisible(true);
         }
         else if(source == random){
-            System.out.println("hi");
             getCards(currentDeck, true, false);
+        }
+        else if(source == Alphabetical){
+            getCards(currentDeck, false, true);
         }
         else{
             for(int i = 0; i < files.length;i++){
@@ -102,6 +110,12 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     public void mousePressed(MouseEvent e) {
         Object source = e.getSource();
     }
+    //add methods here
+    
+    
+    
+    
+    
     public void getCards(String fileName, boolean random , boolean alphabetical) {
         if(buttonArr != null){
             try{
@@ -125,6 +139,8 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
             names = s.split(",");
             s = reader.readLine();
             answers = s.split(",");
+            reader.close();
+            input.close();
             if(random == true){
                 randomizeButtons();
             }
@@ -149,6 +165,25 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     }
     public void alphabetizeButtons(){
         //place holder for alphabetical sorting
+         int[] numArr = new int[names.length];
+         String[] tempName = names.clone();
+         Arrays.sort(tempName);
+         for(int i = 0; i < names.length; i++){
+             for(int a = 0; a < names.length; a++){
+                 if(tempName[i].equals(names[a])){
+                     numArr[i] = a;
+                 }
+             }
+         }
+         tempName = null;
+         tempName = new String[names.length];
+         String[] tempAnswers = new String[answers.length];
+         for(int i = 0; i < names.length; i++){
+             tempName[i] = names[numArr[i]];
+             tempAnswers[i] = answers[numArr[i]];
+         }
+         names = tempName;
+         answers = tempAnswers;
     }
     public void randomizeButtons(){
         int[] numArr = new int[names.length];
@@ -190,7 +225,7 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     public static void main(String[] args) {
         MainFlash frame = new MainFlash();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(400, 300);
         frame.setVisible(true);
     }
 }
