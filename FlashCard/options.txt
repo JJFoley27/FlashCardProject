@@ -1,1 +1,1 @@
-Comic Sans MS,16,black,white
+Comic Sans MS,24,green,red

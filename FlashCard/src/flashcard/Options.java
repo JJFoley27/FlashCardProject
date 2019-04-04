@@ -14,9 +14,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
@@ -25,6 +27,8 @@ import java.nio.file.Paths;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -34,7 +38,8 @@ import javax.swing.JFrame;
 public class Options extends JFrame implements ItemListener, ActionListener{
     String[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
     String[] sizes = {"8","9","10","11","12","14","16","18","20","22","24","26","28","36","48","72"};
-    String[] colors = {"red", "black", "blue", "cyan", "darkGray", "gray", "green", "lightGray", "magenta", "orange", "pink", "white", "yellow"};
+    String[] colorF = {"black", "red", "blue", "cyan", "darkGray", "gray", "green", "lightGray", "magenta", "orange", "pink", "white", "yellow"};
+    String[] colorC = {"white", "red", "black", "blue", "cyan", "darkGray", "gray", "green", "lightGray", "magenta", "orange", "pink", "yellow"};
     String fontString = "";
     int fontSizeInt;
     int red;
@@ -56,7 +61,8 @@ public class Options extends JFrame implements ItemListener, ActionListener{
             reader.close();
             input.close();
             fontString = s[0];
-            fontSizeInt = Integer.parseInt(s[1]);
+            String fontSizeString = s[1];
+            fontSizeInt = Integer.parseInt(fontSizeString);
             fSColor = s[2];
             bSColor = s[3];
             getColors();
@@ -64,9 +70,28 @@ public class Options extends JFrame implements ItemListener, ActionListener{
             exampleButton.setForeground(fColor);
             exampleButton.setBackground(bColor);
             exampleButton.setFont(newFont);
-        } catch (IOException ex) {
+            for(int i = 0; i < colorF.length; i++){
+                if(fontSizeString.equals(sizes[i])){
+                    fontSize.select(i);
+                }
+            }
+            for(int i = 0; i < fonts.length; i++){
+                if(fontString.equals(fonts[i])){
+                    font.select(i);
+                }
+            }
+            for(int i = 0; i < colorF.length; i++){
+                if(fSColor.equals(colorF[i])){
+                    fontColor.select(i);
+                }
+                if(bSColor.equals(colorC[i])){
+                    cardColor.select(i);
+                }
+            }
+        } catch (Exception ex) {
             System.out.println(ex);
         }
+        
     }
     public void makeList(){
         
@@ -76,16 +101,18 @@ public class Options extends JFrame implements ItemListener, ActionListener{
         for (String size : sizes) {
             fontSize.add(size);
         }
-        Arrays.sort(colors);
-        for (String color : colors) {
-            fontColor.add(color);
-            cardColor.add(color);
+        Arrays.sort(colorF);//,1,colorF.length
+        Arrays.sort(colorC);//,1,colorC.length
+        for (int i = 0; i < colorF.length; i++) {
+            fontColor.add(colorF[i]);
+            cardColor.add(colorC[i]);
         }
     }
     public void buildAWall(){
         fontString = font.getSelectedItem();
         fSColor = fontColor.getSelectedItem();
         bSColor = cardColor.getSelectedItem();
+        getColors();
         fontSizeInt = Integer.parseInt(fontSize.getSelectedItem());
         Font newFont = new Font(fontString, Font.PLAIN, fontSizeInt);
         exampleButton.setForeground(fColor);
@@ -180,21 +207,28 @@ public class Options extends JFrame implements ItemListener, ActionListener{
                 break;
         }
     }
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        getColors();
-        buildAWall();
-    }
+    
+    
     public void updateApp(){
         String filePath = "options.txt";
         File f = new File(filePath);
+        FileWriter fwOb; 
+        try {
+            fwOb = new FileWriter(filePath, false);
+            PrintWriter pwOb = new PrintWriter(fwOb, false);
+            pwOb.flush();
+            pwOb.close();
+            fwOb.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Options.class.getName()).log(Level.SEVERE, null, ex);
+        }
         StringBuilder subjectSet = new StringBuilder();
         StringBuilder descraptionSet = new StringBuilder();
         try {
-            
             Path outFile = Paths.get(filePath);
             FileChannel out = (FileChannel)Files.newByteChannel(outFile, CREATE, WRITE);
             String lineSep = ",";
+            
             String s = fontString + lineSep + fontSize.getSelectedItem() + lineSep + 
                     fontColor.getSelectedItem() + lineSep + cardColor.getSelectedItem();
             byte data[] = s.getBytes();
@@ -205,10 +239,14 @@ public class Options extends JFrame implements ItemListener, ActionListener{
             System.out.println(ex);
         }
     }
-    
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        buildAWall();
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
+        
         if(applyButton == source){
             updateApp();
         }
@@ -238,7 +276,7 @@ public class Options extends JFrame implements ItemListener, ActionListener{
         cardColor = new java.awt.Choice();
         exampleButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Font:");
 
