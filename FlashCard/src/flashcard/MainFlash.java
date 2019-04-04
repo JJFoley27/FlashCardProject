@@ -22,17 +22,20 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     JMenu file = new JMenu("File");
     JMenuItem exit = new JMenuItem("Exit");
     JMenuItem newDeck = new JMenuItem("New Deck");
-    JMenu orderCards = new JMenu("Order Cards");
+    JMenu tools = new JMenu("Tools");
     JMenuItem random = new JMenuItem("Random");
-    JMenuItem Alphabetical = new JMenuItem("Alphabetical");
+    JMenuItem alphabetical = new JMenuItem("Alphabetical");
+    JMenuItem options = new JMenuItem("Options");
     JMenu about = new JMenu("About");
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem[] files;
     JMenuItem fileMenu[] = {openDeck, newDeck, exit};
     String currentDeck = "deck0";
+    String[] optionArr;
     public MainFlash() {
         super("Flash!!!!! Ahhah Savior of the Universe!!!!!!");
         getCards(currentDeck, false, false);
+        getApp();
         add(buttonContainer);
         setMenuBar();
     }
@@ -40,11 +43,13 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         setJMenuBar(menubar);
         menubar.add(file);
         //file.add(editDeck);
-        menubar.add(orderCards);
-        orderCards.add(random);
-        orderCards.add(Alphabetical);
+        menubar.add(tools);
+        tools.add(random);
+        tools.add(alphabetical);
+        tools.add(options);
         random.addActionListener(this);
-        Alphabetical.addActionListener(this);
+        alphabetical.addActionListener(this);
+        options.addActionListener(this);
         menubar.add(about);
         // adds action listeners to all menu items
         deckFileBarGen();
@@ -66,8 +71,12 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         else if(source == random){
             getCards(currentDeck, true, false);
         }
-        else if(source == Alphabetical){
+        else if(source == alphabetical){
             getCards(currentDeck, false, true);
+        }
+        else if(source == options){
+            Options frame = new Options();
+            frame.setVisible(true);
         }
         else{
             for(int i = 0; i < files.length;i++){
@@ -93,6 +102,7 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         for (int i = 0; i < files.length; i++) {
             openDeck.remove(files[i]);
         }
+        getApp();
         rePaint();
         deckFileBarGen();
     }
@@ -164,7 +174,6 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         rePaint();
     }
     public void alphabetizeButtons(){
-        //place holder for alphabetical sorting
          int[] numArr = new int[names.length];
          String[] tempName = names.clone();
          Arrays.sort(tempName);
@@ -213,7 +222,7 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
                 files[i] = new JMenuItem(s[0]);
                 openDeck.add(files[i]);
                 files[i].addActionListener(this);
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 System.out.println(ex);
             }
         }
@@ -222,10 +231,106 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         revalidate();
         repaint();
     }
+    public void getApp(){
+        Path inf = Paths.get("options.txt");
+        try {
+            InputStream input = Files.newInputStream(inf);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            optionArr = reader.readLine().split(",");
+            Font newFont = new Font(optionArr[0], Font.PLAIN, Integer.parseInt(optionArr[1]));
+            for(int i = 0; i < buttonArr.length; i++){
+                buttonArr[i].setForeground(getFontColor());
+                buttonArr[i].setBackground(getCardColor());
+                buttonArr[i].setFont(newFont);
+            }
+            reader.close();
+            input.close();
+        } catch (IOException ex) {
+            System.out.println(ex);
+        }
+    }
+    public Color getCardColor(){
+        switch(optionArr[3]){
+            case "red":
+                return Color.RED;
+            case "black":
+                return Color.black;
+            case "blue":
+                return Color.blue;
+            case "cyan":
+                return Color.cyan;
+            case "darkGray":
+                return Color.darkGray;
+            case "gray":
+                return Color.gray;
+            case "green":
+                return Color.green;
+            case "lightGray":
+                return Color.lightGray;
+            case "magenta":
+                return Color.magenta;
+            case "orange":
+                return Color.orange;
+            case "pink":
+                return Color.pink;
+            case "white":
+                return Color.white;
+            case "yellow":
+                return Color.yellow;
+            default:
+                return Color.white;
+        }
+    }
+    public Color getFontColor(){
+        switch(optionArr[2]){
+            case "red":
+                return Color.RED;
+
+            case "black":
+                return Color.black;
+
+            case "blue":
+                return Color.blue;
+
+            case "cyan":
+                return Color.cyan;
+
+            case "darkGray":
+                return Color.darkGray;
+
+            case "gray":
+                return Color.gray;
+
+            case "green":
+                return Color.green;
+
+            case "lightGray":
+                return Color.lightGray;
+
+            case "magenta":
+                return Color.magenta;
+
+            case "orange":
+                return Color.orange;
+
+            case "pink":
+                return Color.pink;
+
+            case "white":
+                return Color.white;
+
+            case "yellow":
+                return Color.yellow;
+
+            default:
+                return Color.black;
+        }
+        
+    }
     public static void main(String[] args) {
         MainFlash frame = new MainFlash();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(600, 300);
         frame.setVisible(true);
     }
 }

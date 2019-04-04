@@ -66,8 +66,8 @@ public class NewDeck extends JFrame implements ActionListener{
         StringBuilder descraptionSet = new StringBuilder();
         for(int i = 0; i < cardArrCounter; i++){
             try{
-                subjectSet.append(subjectCardArr[i].getText() + ",");
-                descraptionSet.append(definitionCardArr[i].getText() + ",");
+                subjectSet.append(subjectCardArr[i].getText()).append(",");
+                descraptionSet.append(definitionCardArr[i].getText()).append(",");
             }catch(Exception ex){
 
             }
@@ -85,6 +85,7 @@ public class NewDeck extends JFrame implements ActionListener{
         } catch (IOException ex) {
             System.out.println(ex);
         }
+        dispose();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
