@@ -70,7 +70,7 @@ public class Options extends JFrame implements ItemListener, ActionListener{
             exampleButton.setForeground(fColor);
             exampleButton.setBackground(bColor);
             exampleButton.setFont(newFont);
-            for(int i = 0; i < colorF.length; i++){
+            for(int i = 0; i < sizes.length; i++){
                 if(fontSizeString.equals(sizes[i])){
                     fontSize.select(i);
                 }
