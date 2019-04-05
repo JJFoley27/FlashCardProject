@@ -13,7 +13,6 @@ import javax.swing.*;
  * @author Michael Flett, Christopher Coen, Alix Kramer, Jesse Foley
  */
 class MainFlash extends JFrame implements MouseListener, ActionListener {
-
     String[] names;
     String[] answers;
     JButton[] buttonArr = null;
@@ -27,18 +26,17 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
     JMenuItem random = new JMenuItem("Random");
     JMenuItem alphabetical = new JMenuItem("Alphabetical");
     JMenuItem options = new JMenuItem("Options");
-    JMenu about = new JMenu("About");
+    JMenuItem about = new JMenuItem("About");
     JMenu openDeck = new JMenu("Open Decks");
     JMenuItem editDeck = new JMenuItem("Edit Deck");
     JMenuItem[] files;
-    JMenuItem fileMenu[] = {openDeck, newDeck, exit};
+    JMenuItem fileMenu[] = {openDeck, newDeck, editDeck, exit};
     String currentDeck = "deck0";
     String[] optionArr;
 
     public MainFlash() {
         super("Flash!!!!! Ahhah Savior of the Universe!!!!!!");
         getCards(currentDeck, false, false);
-        getApp();
         add(buttonContainer);
         setMenuBar();
     }
@@ -51,12 +49,11 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         tools.add(random);
         tools.add(alphabetical);
         tools.add(options);
-        tools.add(editDeck);
         random.addActionListener(this);
         alphabetical.addActionListener(this);
         options.addActionListener(this);
         menubar.add(about);
-        editDeck.addActionListener(this);
+        about.addActionListener(this);
         // adds action listeners to all menu items
         deckFileBarGen();
         for (int i = 0; i < fileMenu.length; i++) {
@@ -83,6 +80,9 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
             frame.setVisible(true);
         } else if(source == editDeck){
             editDeck(currentDeck);
+        }
+        else if(source == about){
+            JOptionPane.showMessageDialog(null, "Created by Michael Flett the lead developer\nJessie Foley helped\nChristopher Coen did the boards\nAlix Kramer was there");
         }
         else {
             for (int i = 0; i < files.length; i++) {
@@ -176,6 +176,7 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         } catch (Exception ex) {
             System.out.println(ex);
         }
+        getApp();
         rePaint();
     }
 
@@ -241,7 +242,7 @@ class MainFlash extends JFrame implements MouseListener, ActionListener {
         try {
             Desktop.getDesktop().open(new File("flashcardDecks//" + deck + ".csv"));
         } catch (IOException ex) {
-
+            System.out.println(ex);
         }
     }
 
